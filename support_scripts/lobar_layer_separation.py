@@ -131,6 +131,9 @@ def main(argv):
     lesion = nib.load(args.lesion).get_fdata()
     layers = nib.load(args.layers).get_fdata()
     lobes = nib.load(args.lobes).get_fdata()
+    # There needs to be a first step to ensure that there is same volume evaluated by lobes and layers
+    lobes = np.where(layers>0,lobes,np.zeros_like(lobes))
+    layers = np.where(lobes>0,layers, np.zeros_like(layers))
     dict_lobes = process_lobes(lobes,lesion)
     print('Lobes processed')
     dict_layers = process_layers(layers, lesion)

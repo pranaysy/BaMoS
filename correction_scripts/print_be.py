@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import argparse
 import sys
 
-FULL_LABELS = ['Frontal', 'Parietal', 'Temporal', 'Occipital', 'Subcortical',
+FULL_LABELS = ['Frontal', 'Parietal', 'Temporal', 'Occipital', 'BGIT',
                'Occipital', 'Temporal', 'Parietal', 'Frontal']
 TERR_LABELS = ['ACA','MCA','PCA','IT','PCA','MCA','ACA']
 FULL_LABELS_IT = ['Frontal', 'Parietal', 'Temporal', 'Occipital',
@@ -96,6 +96,7 @@ def main(argv):
                         type=str, default='Reds',
                         help='color map to use')
     parser.add_argument('-type',default='FreqLobes',dest='type')
+    parser.add_argument('-id',dest='id')
     parser.add_argument('-vmax',dest='vmax',default=0.3)
     
  
@@ -109,10 +110,10 @@ def main(argv):
 
     df_les = pd.read_csv(args.csv)
     list_fields = [args.type+k for k in ORDER]
-    data = np.asarray(df_les[list_fields])
+    data = np.asarray(df_les[df_les['id']==args.id][list_fields])
     be = create_bullseye_plot(data,args.color,vmax=args.vmax)
     be.show()
-    be.savefig(args.csv.split('.csv')[0]+'.png')
+    be.savefig(args.csv.split('.csv')[0]+'_'+args.id+'.png')
 
 if __name__ == "__main__":
      args_temp = ['-csv','/Users/carolesudre/Data/MNI/test.csv',]
