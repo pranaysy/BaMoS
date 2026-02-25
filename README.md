@@ -37,10 +37,12 @@ The following additional flags enable optimisations for the specific CPU on whic
  - `CMAKE_C_FLAGS="-march=native -mtune=native"`: Optimize for native CPU instruction set
  - `CMAKE_CXX_FLAGS="-march=native -mtune=native"`: Optimize for native CPU instruction set
 
+The build process can be configured for a user-level installation or a system-wide installation (if desired, and if sudo available).
+
 ## OPTION A: USER INSTALLATION
 ### Configure compilation and build
 ```bash
-cmake -S . -B ./build -DBUILD_ALL=ON -DUSE_OPENMP=ON -DBUILD_SHARED=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DCMAKE_C_FLAGS="-march=native -mtune=native"	-DCMAKE_CXX_FLAGS="-march=native -mtune=native"
+cmake -S . -B ./build -DBUILD_ALL=ON -DUSE_OPENMP=ON -DBUILD_SHARED=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD/build/install -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
 cmake --build build --parallel $(nproc)  # Compile with all available cores
 cmake --install build   # Perform installation to specified path
@@ -57,15 +59,15 @@ $PWD/build/install/bin/Seg_Analysis --help
 ```
 ### Configure environment to find these binaries (add to .bashrc for persistence)
 ```bash
-export PATH="$PWD/build-test/install/bin:$PATH"
+export PATH="$PWD/build/install/bin:$PATH"
 ```
 ## OPTION B: SYSTEM INSTALLATION
 ### Configure compilation and build
 ```bash
-cmake -S . -B build -DBUILD_ALL=ON -DUSE_OPENMP=ON -DBUILD_SHARED=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+cmake -S . -B build -DBUILD_ALL=ON -DUSE_OPENMP=ON -DBUILD_SHARED=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_C_FLAGS="-march=native -mtune=native" -DCMAKE_CXX_FLAGS="-march=native -mtune=native"
 
-cmake --build build --parallel $(nproc)
-sudo cmake --install build
+cmake --build build --parallel $(nproc)  # Compile with all available cores
+sudo cmake --install build   # Perform installation to specified path
 ```
 ### Check install manifest
 ```bash
